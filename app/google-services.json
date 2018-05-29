@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "295648640036",
+    "firebase_url": "https://catchu-4b56c.firebaseio.com",
+    "project_id": "catchu-4b56c",
+    "storage_bucket": "catchu-4b56c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295648640036:android:8ec705f75a1f17f2",
+        "android_client_info": {
+          "package_name": "uren.com.catchu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295648640036-jou2ueo3d4u5kcgaridf66lm07lpt7ta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uren.com.catchu",
+            "certificate_hash": "fd5159c55d0d1736eb6fbc1ab0dd2b5b734b1cdd"
+          }
+        },
+        {
+          "client_id": "295648640036-r3gjorfio5oebuio25hpgspo33tokhii.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "295648640036-r3gjorfio5oebuio25hpgspo33tokhii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7I1oMdsrr0M1pUMG-He8lr40v01VUJ1g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295648640036-r3gjorfio5oebuio25hpgspo33tokhii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
