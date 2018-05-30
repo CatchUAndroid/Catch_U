@@ -20,7 +20,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -30,6 +30,16 @@ dependencies {
     compile 'com.google.firebase:firebase-core:15.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton:butterknife:8.8.1'
+
+    //Firebase
+    compile 'com.firebase:geofire-android:2.1.2'
+    compile 'com.firebase:firebase-client-android:2.5.0'
+    compile 'com.google.firebase:firebase-storage:15.0.0'
+    compile 'com.google.firebase:firebase-invites:15.0.0'
+    compile 'com.google.firebase:firebase-config:15.0.0'
+    compile 'com.google.firebase:firebase-core:15.0.0'
+    compile 'com.google.firebase:firebase-database:15.0.0'
+    compile 'com.google.firebase:firebase-auth:15.0.0'
 
 }
 

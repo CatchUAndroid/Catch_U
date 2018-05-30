@@ -13,19 +13,35 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+
+import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.R;
 
 public class RegisterActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    //XML
     Toolbar mToolBar;
     RelativeLayout backgroundLayout;
     EditText usernameET;
     EditText emailET;
     EditText passwordET;
     Button btnRegister;
+
+    //Local
+    String userName;
+    String userEmail;
+    String userPassword;
+
+    //Firebase
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDbref;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +67,8 @@ public class RegisterActivity extends AppCompatActivity
         emailET.setOnClickListener(this);
         passwordET.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -102,6 +120,33 @@ public class RegisterActivity extends AppCompatActivity
     /*****************************CLICK EVENTS******************************/
 
     private void btnRegisterClicked() {
+
+        userName = usernameET.getText().toString();
+        userEmail = emailET.getText().toString();
+        userPassword = passwordET.getText().toString();
+
+        //username validation
+        if(!Validation.getInstance().isValidUserName(userName)){
+
+            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //email validation
+        if(!Validation.getInstance().isValidEmail(userEmail)){
+
+            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //password validation
+        if(!Validation.getInstance().isValidPassword(userPassword)){
+
+            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
     }
 }
