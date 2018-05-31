@@ -1,6 +1,8 @@
 package uren.com.catchu.LoginPackage;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.R;
+import uren.com.catchu.Utils.DialogBox;
 
 public class RegisterActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -125,28 +128,49 @@ public class RegisterActivity extends AppCompatActivity
         userEmail = emailET.getText().toString();
         userPassword = passwordET.getText().toString();
 
-        //username validation
-        if(!Validation.getInstance().isValidUserName(userName)){
+        //validation controls
+        if(!checkValidation(userName, userEmail, userPassword)){return;}
 
-            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        //email validation
-        if(!Validation.getInstance().isValidEmail(userEmail)){
 
-            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        //password validation
-        if(!Validation.getInstance().isValidPassword(userPassword)){
-
-            Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
-            return;
-        }
 
 
 
     }
+
+    private boolean checkValidation(String name, String email, String password) {
+
+        //username validation
+        if(!Validation.getInstance().isValidUserName(name)){
+            //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            openDialog(Validation.getInstance().getErrorMessage());
+            return false;
+        }
+
+        //email validation
+        if(!Validation.getInstance().isValidEmail(email)){
+            //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            openDialog(Validation.getInstance().getErrorMessage());
+            return false;
+        }
+
+        //password validation
+        if(!Validation.getInstance().isValidPassword(password)){
+            //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
+            openDialog(Validation.getInstance().getErrorMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    public void openDialog(String message){
+
+        DialogBox.getInstance().showDialogBox(this, message);
+
+    }
+
+
+
+
 }
