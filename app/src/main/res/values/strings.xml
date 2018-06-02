@@ -9,4 +9,7 @@
     <string name="forgetPassword">Forget Password?</string>
     <string name="register">Register</string>
 
+    <string name="facebook_app_id">1429718627133451</string>
+    <string name="fb_login_protocol_scheme">fb1429718627133451</string>
+
 </resources>
