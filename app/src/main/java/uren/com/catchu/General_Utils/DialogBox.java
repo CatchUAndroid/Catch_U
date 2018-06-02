@@ -1,4 +1,4 @@
-package uren.com.catchu.Utils;
+package uren.com.catchu.General_Utils;
 
 import android.app.AlertDialog;
 import android.content.Context;

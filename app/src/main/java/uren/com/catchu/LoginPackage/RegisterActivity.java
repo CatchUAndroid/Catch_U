@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
 import uren.com.catchu.R;
-import uren.com.catchu.Utils.DialogBox;
+import uren.com.catchu.General_Utils.DialogBox;
 
 public class RegisterActivity extends AppCompatActivity
         implements View.OnClickListener {

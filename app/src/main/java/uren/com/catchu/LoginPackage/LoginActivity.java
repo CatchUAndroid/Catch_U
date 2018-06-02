@@ -32,14 +32,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import uren.com.catchu.LoginPackage.utils.ClickableImageView;
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
 import uren.com.catchu.R;
-import uren.com.catchu.Utils.DialogBox;
+import uren.com.catchu.General_Utils.DialogBox;
 
 public class LoginActivity extends AppCompatActivity
         implements View.OnClickListener {
