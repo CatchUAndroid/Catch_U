@@ -33,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/pacifico"
                 android:text="@string/register"
                 android:textColor="@color/clearRed"
                 android:textSize="30sp" />

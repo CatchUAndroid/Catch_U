@@ -1,6 +1,9 @@
 package uren.com.catchu.LoginPackage.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
+
+import uren.com.catchu.R;
 
 /**
  * Created by ASUS on 30.5.2018.
@@ -30,40 +33,40 @@ public class Validation {
     private Validation() {
     }
 
-    public boolean isValidEmail(String email){
+    public boolean isValidUserName(Context context,String userName){
+
+        if (TextUtils.isEmpty(userName)) {
+            errorMessage = context.getString(R.string.USERNAME_ERR_REQUIRED);
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isValidEmail(Context context, String email){
 
         if (TextUtils.isEmpty(email)) {
-            errorMessage = EMAIL_ERR_REQUIRED;
+            errorMessage =context.getString(R.string.EMAIL_ERR_REQUIRED);
             return false;
         }
 
         if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            errorMessage = EMAIL_ERR_INVALID;
+            errorMessage = context.getString(R.string.EMAIL_ERR_INVALID);
             return false;
         }
 
         return true;
     }
 
-    public boolean isValidPassword(String password){
+    public boolean isValidPassword(Context context, String password){
 
         if (TextUtils.isEmpty(password)) {
-            errorMessage = PASSWORD_ERR_REQUIRED;
+            errorMessage = context.getString(R.string.PASSWORD_ERR_REQUIRED);
             return false;
         }
 
         if (password.length() < PASSWORD_MAX_LENGTH) {
-            errorMessage = PASSWORD_ERR_LENGTH;
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean isValidUserName(String userName){
-
-        if (TextUtils.isEmpty(userName)) {
-            errorMessage = USERNAME_ERR_REQUIRED;
+            errorMessage = context.getString(R.string.PASSWORD_ERR_LENGTH);
             return false;
         }
 

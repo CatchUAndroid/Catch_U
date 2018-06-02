@@ -11,11 +11,17 @@
     <string name="register">Register</string>
 
     //Messages-Warnings
+    <string name="UNKNOWN_ERROR">Operation failed!</string>
     <string name="EMAIL_ERR_REQUIRED">Email can not be empty!</string>
     <string name="EMAIL_ERR_INVALID">Please type a valid email address!</string>
     <string name="PASSWORD_ERR_REQUIRED">Password can not be empty!</string>
     <string name="PASSWORD_ERR_LENGTH">Password length must be at least 6!</string>
     <string name="USERNAME_ERR_REQUIRED">Username can not be empty!</string>
+    <string name="COLLISION_EXCEPTION">E-mail is already registered, please try another one!</string>
+    <string name="INVALID_CREDENTIALS">Email or password is wrong!</string>
+    <string name="INVALID_USER">Invalid email address</string>
+    <string name="REGISTERING_USER">"Registering user.."</string>
+    <string name="LOGGING_USER">"Logging in user.."</string>
 
 
 </resources>

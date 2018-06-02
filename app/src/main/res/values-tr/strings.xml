@@ -12,10 +12,16 @@
     <string name="register">Kaydol</string>
 
     // Mesajlar-Uyarılar
+    <string name="UNKNOWN_ERROR">İşlem tamamlanamadı!</string>
     <string name="EMAIL_ERR_REQUIRED">Email boş olamaz!</string>
     <string name="EMAIL_ERR_INVALID">Geçerli bir email adresi giriniz</string>
     <string name="PASSWORD_ERR_REQUIRED">Şifre boş olamaz!</string>
     <string name="PASSWORD_ERR_LENGTH">Şifre en az 6 karakter olmalıdır!</string>
     <string name="USERNAME_ERR_REQUIRED">Kullanıcı adı boş olamaz!</string>
+    <string name="COLLISION_EXCEPTION">E-mail adresi kayıtlı. Lütfen başka e-mail adresi giriniz.</string>
+    <string name="INVALID_CREDENTIALS">Email veya şifre yanlış..</string>
+    <string name="INVALID_USER">Email adresi tanımlı değil..</string>
+    <string name="REGISTERING_USER">"Hesap oluşturuluyor.."</string>
+    <string name="LOGGING_USER">"Giriş yapılıyor.."</string>
 
 </resources>
