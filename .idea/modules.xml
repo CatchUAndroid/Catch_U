@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CatchU.iml" filepath="$PROJECT_DIR$/CatchU.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Catch_U.iml" filepath="$PROJECT_DIR$/Catch_U.iml" />
+      <module fileurl="file://C:\Users\ASUS\Desktop\projects\CatchU\Catch_U.iml" filepath="C:\Users\ASUS\Desktop\projects\CatchU\Catch_U.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.DatabaseReference;
 
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
@@ -50,8 +49,6 @@ public class RegisterActivity extends AppCompatActivity
 
     //Firebase
     private FirebaseAuth mAuth;
-    private DatabaseReference mDbref;
-    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

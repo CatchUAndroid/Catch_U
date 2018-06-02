@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
@@ -18,7 +15,6 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,22 +57,15 @@ import com.facebook.FacebookException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.database.DatabaseReference;
 
 import uren.com.catchu.LoginPackage.utils.ClickableImageView;
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
+import uren.com.catchu.ModelsPackage.User;
 import uren.com.catchu.R;
 import uren.com.catchu.General_Utils.DialogBox;
 
@@ -92,23 +81,20 @@ public class LoginActivity extends AppCompatActivity
     ClickableImageView imgTwitter;
     Button btnLogin;
     private TwitterLoginButton mLoginButton;
-    private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
 
     private boolean fbLogin = false;
     private boolean twLogin = false;
 
-    public User user;
-
     //Local
     String userEmail;
     String userPassword;
     ProgressDialog progressDialog;
+    public User user;
 
     //Firebase
     private FirebaseAuth mAuth;
-    private DatabaseReference mDbref;
-    DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +118,6 @@ public class LoginActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_login);
 
-        mLoginButton = findViewById(R.id.twitterLoginButton);
-
-        getHashKey();
-
-        user = new User();
-        mAuth = FirebaseAuth.getInstance();
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -149,25 +129,6 @@ public class LoginActivity extends AppCompatActivity
 
     }
 
-    private void getHashKey() {
-
-        // Add code to print out the key hash
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "uren.com.catchu",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
-    }
 
     private void initVariables() {
         backgroundLayout = (RelativeLayout) findViewById(R.id.loginLayout);
@@ -187,7 +148,9 @@ public class LoginActivity extends AppCompatActivity
         imgTwitter.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
+        mLoginButton = findViewById(R.id.twitterLoginButton);
 
+        user = new User();
         mAuth = FirebaseAuth.getInstance();
 
     }
@@ -431,8 +394,6 @@ public class LoginActivity extends AppCompatActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
     }
 
     private void handleTwitterSession(final TwitterSession session) {

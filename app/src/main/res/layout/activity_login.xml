@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/loginLayout"
-    tools:context=".LoginPackage.LoginActivity">
+    tools:context=".LoginPackage.MainActivity">
 
     <!--ImageView
         android:id="@+id/background_image"
@@ -57,40 +57,62 @@
             android:theme="@style/EditTextTheme">
 
             <!--  Email Label -->
-            <EditText
+            <!--EditText
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/mail"
                 android:drawablePadding="20dp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:paddingLeft="8dp"
                 android:textColor="@color/clearRed"
-                android:textColorHint="@color/tintColor" />
-
+                android:textColorHint="@color/tintColor" /-->
 
             <EditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:ems="15"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:layout_margin="3dp"
+                android:importantForAutofill="noExcludeDescendants"/>
+
+
+            <!--EditText
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/key"
                 android:drawablePadding="20dp"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
                 android:paddingLeft="8dp"
                 android:textColor="@color/clearRed"
-                android:textColorHint="@color/tintColor" />
+                android:textColorHint="@color/tintColor" /-->
+
+            <EditText
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:ems="15"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:layout_margin="3dp"
+                android:importantForAutofill="noExcludeDescendants"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/ripple"
                 android:text="@string/login"
                 android:textColor="@color/clearRed"
                 android:id="@+id/btnLogin"/>
+            <!--android:background="@drawable/ripple"-->
 
         </LinearLayout>
 
@@ -111,6 +133,25 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                android:id="@+id/twitterLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:visibility="gone"/>
+
+            <com.facebook.login.widget.LoginButton
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/facebookLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                facebook:com_facebook_login_text="Log in with Facebook"
+                android:visibility="gone"/>
 
             <uren.com.catchu.LoginPackage.utils.ClickableImageView
                 android:id="@+id/clickImageFB"
