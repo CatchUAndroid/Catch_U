@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity
             StrictMode.setThreadPolicy(policy);
         }
 
-        setStatusBarTransparent();
         initVariables();
 
     }
@@ -232,13 +231,6 @@ public class LoginActivity extends AppCompatActivity
             }
         }
         return super.dispatchTouchEvent(event);
-    }
-
-    private void setStatusBarTransparent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
     }
 
     /*****************************CLICK EVENTS******************************/
