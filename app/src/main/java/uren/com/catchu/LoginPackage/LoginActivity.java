@@ -461,10 +461,6 @@ public class LoginActivity extends AppCompatActivity
                                 user.setProviderId(object.getString("id"));
                             else user.setProviderId(" ");
 
-                            user.setGender(" ");
-                            user.setUsername(" ");
-                            user.setPhoneNum(" ");
-
                             String[] elements = object.getString("name").split(" ");
                             user.setName(elements[0]);
 
@@ -505,14 +501,8 @@ public class LoginActivity extends AppCompatActivity
 
     public void setFacebookProfilePicture(String userID) {
 
-        try {
-            String url = "https://graph.facebook.com/" + userID + "/picture?type=large";
-            user.setProfilePicSrc(url);
-
-        } catch (Exception e) {
-
-            Log.i("Info", "  >>setFacebookProfilePicture error:" + e.toString());
-        }
+        String url = "https://graph.facebook.com/" + userID + "/picture?type=large";
+        user.setProfilePicSrc(url);
     }
 
     @Override

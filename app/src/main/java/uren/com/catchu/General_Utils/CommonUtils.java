@@ -66,9 +66,6 @@ public class CommonUtils {
         }
     }
 
-
-
-
     public static Drawable setDrawableSelector(Context context, int normal, int selected) {
 
 
