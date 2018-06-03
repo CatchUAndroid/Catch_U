@@ -80,14 +80,16 @@ dependencies {
     compile 'com.github.andyxialm:ColorDialog:1.0.0'
     compile 'com.googlecode.libphonenumber:libphonenumber:7.2.2'
 
-
     // Twitter Android SDK (only required for Twitter Login)
     compile files('libs/twitter4j-core-4.0.4.jar')
     compile('com.twitter.sdk.android:twitter-core:2.3.0@aar') {
-        transitive = true }
+        transitive = true
+    }
     compile('com.twitter.sdk.android:twitter:3.1.1@aar') {
-        transitive = true }
+        transitive = true
+    }
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'
