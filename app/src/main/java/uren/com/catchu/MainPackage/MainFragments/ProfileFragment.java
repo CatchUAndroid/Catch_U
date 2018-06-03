@@ -23,7 +23,7 @@ public class ProfileFragment extends BaseFragment{
 
         ButterKnife.bind(this, view);
 
-        ( (MainActivity)getActivity()).updateToolbarTitle("Profile");
+        //( (MainActivity)getActivity()).updateToolbarTitle("Profile");
 
 
         return view;

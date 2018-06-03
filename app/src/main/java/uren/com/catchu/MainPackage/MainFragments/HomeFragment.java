@@ -23,7 +23,7 @@ public class HomeFragment extends BaseFragment {
 
         ButterKnife.bind(this, view);
 
-        ( (MainActivity)getActivity()).updateToolbarTitle("Home");
+        //( (MainActivity)getActivity()).updateToolbarTitle(" ");
 
 
         return view;
