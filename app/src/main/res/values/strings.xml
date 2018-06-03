@@ -9,6 +9,7 @@
     <string name="createAccount">Create Account</string>
     <string name="forgetPassword">Forget Password?</string>
     <string name="register">Register</string>
+    <string name="exitItem">Log Out</string>
 
     //Messages-Warnings
     <string name="UNKNOWN_ERROR">Operation failed!</string>
