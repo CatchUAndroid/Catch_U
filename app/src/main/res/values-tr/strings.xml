@@ -11,6 +11,7 @@
     <string name="forgetPassword">Şifremi unuttum?</string>
     <string name="register">Kaydol</string>
     <string name="exitItem">Çıkış</string>
+    <string name="rememberMe">Beni Hatırla</string>
 
     // Mesajlar-Uyarılar
     <string name="UNKNOWN_ERROR">İşlem tamamlanamadı!</string>

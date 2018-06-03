@@ -106,6 +106,13 @@
                 android:layout_margin="3dp"
                 android:importantForAutofill="noExcludeDescendants"/>
 
+            <CheckBox
+                android:id="@+id/rememberMeCb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/rememberMe"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
