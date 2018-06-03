@@ -201,7 +201,7 @@ public class LoginActivity extends AppCompatActivity
                     //Toast.makeText(LoginActivity.this, "Register click!", Toast.LENGTH_SHORT).show();
                     registerTextClicked();
                 } else if (textView.equals(forgetPasText)) {
-                    Toast.makeText(LoginActivity.this, "Forgetpas click!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Forgetpas click!", Toast.LENGTH_SHORT).show();
                     forgetPasTextClicked();
                 } else {
                     Toast.makeText(LoginActivity.this, "sıçtık!", Toast.LENGTH_SHORT).show();
@@ -305,7 +305,8 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void forgetPasTextClicked() {
-
+        Intent intent = new Intent(this, ForgetPasswordActivity.class);
+        startActivity(intent);
     }
 
     private void imgFacebookClicked() {

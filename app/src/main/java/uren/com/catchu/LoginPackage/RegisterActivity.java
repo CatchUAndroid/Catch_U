@@ -1,18 +1,16 @@
 package uren.com.catchu.LoginPackage;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +22,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 
+import uren.com.catchu.FirebaseAdapterPackage.FBCreateUserProfile;
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
+import uren.com.catchu.ModelsPackage.User;
 import uren.com.catchu.R;
 import uren.com.catchu.General_Utils.DialogBox;
 
@@ -79,13 +80,6 @@ public class RegisterActivity extends AppCompatActivity
 
     }
 
-    private void setStatusBarTransparent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -108,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean dispatchTouchEvent (MotionEvent event){
+    public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (v instanceof EditText) {
@@ -136,17 +130,18 @@ public class RegisterActivity extends AppCompatActivity
         userPassword = passwordET.getText().toString();
 
         //validation controls
-        if(!checkValidation(userName, userEmail, userPassword)){return;}
+        if (!checkValidation(userName, userEmail, userPassword)) {
+            return;
+        }
 
-        createUser(userEmail, userPassword);
+        createUser(userName, userEmail, userPassword);
 
     }
-
 
     private boolean checkValidation(String name, String email, String password) {
 
         //username validation
-        if(!Validation.getInstance().isValidUserName(this, name)){
+        if (!Validation.getInstance().isValidUserName(this, name)) {
             //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
             openDialog(Validation.getInstance().getErrorMessage());
@@ -154,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity
         }
 
         //email validation
-        if(!Validation.getInstance().isValidEmail(this, email)){
+        if (!Validation.getInstance().isValidEmail(this, email)) {
             //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
             openDialog(Validation.getInstance().getErrorMessage());
@@ -162,7 +157,7 @@ public class RegisterActivity extends AppCompatActivity
         }
 
         //password validation
-        if(!Validation.getInstance().isValidPassword(this, password)){
+        if (!Validation.getInstance().isValidPassword(this, password)) {
             //Toast.makeText(this, Validation.getInstance().getErrorMessage() , Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
             openDialog(Validation.getInstance().getErrorMessage());
@@ -172,13 +167,13 @@ public class RegisterActivity extends AppCompatActivity
         return true;
     }
 
-    public void openDialog(String message){
+    public void openDialog(String message) {
 
         DialogBox.getInstance().showDialogBox(this, message);
 
     }
 
-    private void createUser(String userEmail, String userPassword) {
+    private void createUser(final String userName, final String userEmail, final String userPassword) {
 
         final Context context = this;
 
@@ -187,12 +182,15 @@ public class RegisterActivity extends AppCompatActivity
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
 
-                        if(task.isSuccessful()){
+
+                        if (task.isSuccessful()) {
                             Log.i("Info", "CreateUser : Success");
+                            addUserToFB(userName, userEmail, userPassword);
+                            progressDialog.dismiss();
                             startMainPage();
-                        }else{
+                        } else {
+                            progressDialog.dismiss();
                             Log.i("Info", "CreateUser : Fail");
                             try {
                                 throw task.getException();
@@ -211,12 +209,27 @@ public class RegisterActivity extends AppCompatActivity
 
     }
 
-    public void startMainPage() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void addUserToFB(String userName, String userEmail, String userPassword) {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        User newUSer = new User();
+        newUSer.setUsername(userName);
+        newUSer.setEmail(userEmail);
+        if (currentUser != null){
+            newUSer.setUserId(currentUser.getUid());
+        }
+
+        //save user via cloud functions
+        new FBCreateUserProfile(RegisterActivity.this, newUSer);
+
     }
 
+    public void startMainPage() {
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
 
 }

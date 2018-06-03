@@ -9,6 +9,9 @@
     <string name="createAccount">Create Account</string>
     <string name="forgetPassword">Forget Password?</string>
     <string name="register">Register</string>
+    <string name="newPassword">New Password</string>
+    <string name="sendLink">Send Link</string>
+    <string name="forgetPassText">We will send a link to your mail address. You can renew your password.</string>
     <string name="exitItem">Log Out</string>
     <string name="rememberMe">Remember Me</string>
 
@@ -24,6 +27,9 @@
     <string name="INVALID_USER">Invalid email address</string>
     <string name="REGISTERING_USER">"Registering user.."</string>
     <string name="LOGGING_USER">"Logging in user.."</string>
+    <string name="PLEASE_WAIT">"Please wait.."</string>
+    <string name="PASSWORD_LINK_SEND_SUCCESS">Renew password link has sent to your email address.</string>
+    <string name="PASSWORD_LINK_SEND_FAIL">Fail to send link, please tyr again.</string>
 
     <array name="tab_name">
         <item>Home</item>
