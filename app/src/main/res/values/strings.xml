@@ -23,6 +23,14 @@
     <string name="REGISTERING_USER">"Registering user.."</string>
     <string name="LOGGING_USER">"Logging in user.."</string>
 
+    <array name="tab_name">
+        <item>Home</item>
+        <item>Search</item>
+        <item>Share</item>
+        <item>News</item>
+        <item>Profile</item>
+    </array>
+
 
     <string name="facebook_app_id">1429718627133451</string>
     <string name="fb_login_protocol_scheme">fb1429718627133451</string>

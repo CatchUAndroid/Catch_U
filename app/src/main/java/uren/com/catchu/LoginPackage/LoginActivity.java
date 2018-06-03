@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -57,17 +60,33 @@ import com.facebook.FacebookException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
+import uren.com.catchu.FirebaseAdapterPackage.FBCreateUserProfile;
+import uren.com.catchu.General_Utils.BitmapConversion;
 import uren.com.catchu.LoginPackage.utils.ClickableImageView;
 import uren.com.catchu.LoginPackage.utils.Validation;
 import uren.com.catchu.MainPackage.MainActivity;
 import uren.com.catchu.ModelsPackage.User;
 import uren.com.catchu.R;
 import uren.com.catchu.General_Utils.DialogBox;
+
+import static uren.com.catchu.Constants.FirebaseConstants.birthday;
+import static uren.com.catchu.Constants.FirebaseConstants.email;
+import static uren.com.catchu.Constants.FirebaseConstants.mobilePhone;
+import static uren.com.catchu.Constants.FirebaseConstants.name;
+import static uren.com.catchu.Constants.FirebaseConstants.profilePicMiniUrl;
+import static uren.com.catchu.Constants.FirebaseConstants.profilePictureUrl;
+import static uren.com.catchu.Constants.FirebaseConstants.providerId;
+import static uren.com.catchu.Constants.FirebaseConstants.surname;
+import static uren.com.catchu.Constants.FirebaseConstants.userName;
 
 public class LoginActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -91,6 +110,8 @@ public class LoginActivity extends AppCompatActivity
     String userPassword;
     ProgressDialog progressDialog;
     public User user;
+    private InputStream profileImageStream;
+    private Bitmap photo = null;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -124,9 +145,7 @@ public class LoginActivity extends AppCompatActivity
             StrictMode.setThreadPolicy(policy);
         }
 
-        setStatusBarTransparent();
         initVariables();
-
     }
 
 
@@ -232,13 +251,6 @@ public class LoginActivity extends AppCompatActivity
             }
         }
         return super.dispatchTouchEvent(event);
-    }
-
-    private void setStatusBarTransparent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
     }
 
     /*****************************CLICK EVENTS******************************/
@@ -437,11 +449,19 @@ public class LoginActivity extends AppCompatActivity
                         Log.i("Info", "Facebook response:" + response.toString());
 
                         try {
+                            if(object.getString("email") != null)
+                                user.setEmail(object.getString("email"));
+                            else user.setEmail(" ");
 
-                            user.setEmail(object.getString("email"));
-                            user.setBirthdate(object.getString("birthday"));
-                            //user.setGender(object.getString("gender"));
-                            user.setProviderId(object.getString("id"));
+                            if(object.getString("birthday") != null)
+                                user.setBirthdate(object.getString("birthday"));
+                            else user.setBirthdate(" ");
+
+                            if(object.getString("id") != null)
+                                user.setProviderId(object.getString("id"));
+                            else user.setProviderId(" ");
+
+                            user.setGender(" ");
                             user.setUsername(" ");
                             user.setPhoneNum(" ");
 
@@ -458,8 +478,8 @@ public class LoginActivity extends AppCompatActivity
                             String surname = builder.toString().trim();
                             user.setSurname(surname);
 
-                            String fbUserId = object.getString("id");
-                            setFacebookProfilePicture(fbUserId);
+                            String facebookUserId = object.getString("id");
+                            setFacebookProfilePicture(facebookUserId);
 
                             Log.i("FBLogin", "  >>email     :" + user.getEmail());
                             Log.i("FBLogin", "  >>birthday  :" + user.getBirthdate());
@@ -533,7 +553,7 @@ public class LoginActivity extends AppCompatActivity
                                 FirebaseUser currentUser = mAuth.getCurrentUser();
                                 user.setUserId(currentUser.getUid());
 
-                               /* if (user.getProfilePicSrc() != null) {
+                                if (user.getProfilePicSrc() != null) {
 
                                     try {
                                         DownloadTask taskManager = new DownloadTask();
@@ -543,14 +563,14 @@ public class LoginActivity extends AppCompatActivity
                                     } catch (ExecutionException e) {
                                         e.printStackTrace();
                                     }
-                                }*/
+                                }
 
                                 //saveProfPicViaSocialApp();
-                                //new FirebaseUserAdapter(EnterPageActivity.this, user);
+                                new FBCreateUserProfile(LoginActivity.this, user);
 
                                // FBAddFacebookUserAdapter.saveFacebookUser(user.getProviderId());
 
-                                //startNextPage();
+                                startMainPage();
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -560,6 +580,33 @@ public class LoginActivity extends AppCompatActivity
                     });
         } catch (Exception e) {
             Log.i("Info", "  >>handleFacebookAccessToken error:" + e.toString());
+        }
+    }
+
+    public class DownloadTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String result = "";
+            URL url;
+            HttpURLConnection urlConnection = null;
+
+            try {
+                url = new URL(urls[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                profileImageStream = urlConnection.getInputStream();
+                photo = BitmapFactory.decodeStream(profileImageStream);
+                photo = BitmapConversion.getRoundedShape(photo, 250, 250, null);
+
+                return result;
+
+            } catch (Exception e) {
+
+                Log.i("Info", "  >>DownloadTask error:" + e.toString());
+                return result;
+            }
         }
     }
 }

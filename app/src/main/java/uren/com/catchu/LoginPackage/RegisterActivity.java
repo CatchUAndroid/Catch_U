@@ -55,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        setStatusBarTransparent();
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
         init();
