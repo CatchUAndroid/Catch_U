@@ -51,6 +51,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
+        <activity android:name=".MainPackage.MainActivity"
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity android:name=".MainPackage.MainActivity" />
         <activity android:name=".LoginPackage.ForgetPasswordActivity"></activity>
     </application>

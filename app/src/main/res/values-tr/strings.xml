@@ -13,6 +13,8 @@
     <string name="newPassword">Şifre Sıfırlama</string>
     <string name="sendLink">Link Gönder</string>
     <string name="forgetPassText">Mail adresinize göndereceğimiz link ile şifrenizi sıfırlayabilirsiniz.</string>
+    <string name="exitItem">Çıkış</string>
+    <string name="rememberMe">Beni Hatırla</string>
 
     // Mesajlar-Uyarılar
     <string name="UNKNOWN_ERROR">İşlem tamamlanamadı!</string>

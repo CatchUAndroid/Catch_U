@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@color/background"
         android:minHeight="?attr/actionBarSize">
 
         <TextView
@@ -28,8 +29,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/bottom_shadow" />
+        android:layout_height="1dp"/>
+    <!--android:background="@drawable/bottom_shadow"-->
 
     <FrameLayout
         android:id="@+id/content_frame"
@@ -41,8 +42,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/bottom_shadow" />
+        android:layout_height="1dp"/>
+    <!--android:background="@drawable/bottom_shadow"-->
 
 
     <android.support.design.widget.TabLayout

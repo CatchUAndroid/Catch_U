@@ -12,6 +12,8 @@
     <string name="newPassword">New Password</string>
     <string name="sendLink">Send Link</string>
     <string name="forgetPassText">We will send a link to your mail address. You can renew your password.</string>
+    <string name="exitItem">Log Out</string>
+    <string name="rememberMe">Remember Me</string>
 
     //Messages-Warnings
     <string name="UNKNOWN_ERROR">Operation failed!</string>

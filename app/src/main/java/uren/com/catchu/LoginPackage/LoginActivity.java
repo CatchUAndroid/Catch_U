@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,12 +20,14 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,6 +72,8 @@ import java.util.concurrent.ExecutionException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 import uren.com.catchu.FirebaseAdapterPackage.FBCreateUserProfile;
 import uren.com.catchu.General_Utils.BitmapConversion;
 import uren.com.catchu.LoginPackage.utils.ClickableImageView;
@@ -77,16 +82,6 @@ import uren.com.catchu.MainPackage.MainActivity;
 import uren.com.catchu.ModelsPackage.User;
 import uren.com.catchu.R;
 import uren.com.catchu.General_Utils.DialogBox;
-
-import static uren.com.catchu.Constants.FirebaseConstants.birthday;
-import static uren.com.catchu.Constants.FirebaseConstants.email;
-import static uren.com.catchu.Constants.FirebaseConstants.mobilePhone;
-import static uren.com.catchu.Constants.FirebaseConstants.name;
-import static uren.com.catchu.Constants.FirebaseConstants.profilePicMiniUrl;
-import static uren.com.catchu.Constants.FirebaseConstants.profilePictureUrl;
-import static uren.com.catchu.Constants.FirebaseConstants.providerId;
-import static uren.com.catchu.Constants.FirebaseConstants.surname;
-import static uren.com.catchu.Constants.FirebaseConstants.userName;
 
 public class LoginActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -101,6 +96,10 @@ public class LoginActivity extends AppCompatActivity
     Button btnLogin;
     private TwitterLoginButton mLoginButton;
     private CallbackManager mCallbackManager;
+    private CheckBox rememberMeCheckBox;
+    private Boolean saveLogin;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
 
     private boolean fbLogin = false;
     private boolean twLogin = false;
@@ -158,6 +157,7 @@ public class LoginActivity extends AppCompatActivity
         imgFacebook = (ClickableImageView) findViewById(R.id.clickImageFB);
         imgTwitter = (ClickableImageView) findViewById(R.id.clickImageTwitter);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        rememberMeCheckBox = findViewById(R.id.rememberMeCb);
         setClickableTexts(this);
 
         backgroundLayout.setOnClickListener(this);
@@ -171,6 +171,16 @@ public class LoginActivity extends AppCompatActivity
 
         user = new User();
         mAuth = FirebaseAuth.getInstance();
+
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin == true) {
+            emailET.setText(loginPreferences.getString("email", emailET.getText().toString()));
+            passwordET.setText(loginPreferences.getString("password", passwordET.getText().toString()));
+            rememberMeCheckBox.setChecked(true);
+        }
 
     }
 
@@ -218,7 +228,8 @@ public class LoginActivity extends AppCompatActivity
     public void onClick(View view) {
 
         if (view == backgroundLayout) {
-            //continue
+            saveLoginInformation();
+            hideKeyBoard();
         } else if (view == emailET) {
 
         } else if (view == passwordET) {
@@ -230,10 +241,42 @@ public class LoginActivity extends AppCompatActivity
             imgTwitterClicked();
         } else if (view == btnLogin) {
             loginBtnClicked();
+        } else if(view == rememberMeCheckBox){
+            saveLoginInformation();
         } else {
 
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            saveLoginInformation();
+
+        }else if(keyCode == KeyEvent.KEYCODE_HOME){
+            saveLoginInformation();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void saveLoginInformation() {
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(emailET.getWindowToken(), 0);
+
+        String username = emailET.getText().toString();
+        String password = passwordET.getText().toString();
+
+        if (rememberMeCheckBox.isChecked()) {
+            loginPrefsEditor.putBoolean("saveLogin", true);
+            loginPrefsEditor.putString("email", username);
+            loginPrefsEditor.putString("password", password);
+            loginPrefsEditor.commit();
+        } else {
+            loginPrefsEditor.clear();
+            loginPrefsEditor.commit();
+        }
     }
 
     @Override
@@ -324,6 +367,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void loginBtnClicked() {
 
+        saveLoginInformation();
         progressDialog.setMessage(this.getString(R.string.LOGGING_USER));
         progressDialog.show();
 
@@ -336,7 +380,12 @@ public class LoginActivity extends AppCompatActivity
         }
 
         loginUser(userEmail, userPassword);
+    }
 
+    public void hideKeyBoard(){
+
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     private boolean checkValidation(String email, String password) {
@@ -394,13 +443,9 @@ public class LoginActivity extends AppCompatActivity
                                 openDialog(context.getString(R.string.UNKNOWN_ERROR) + "(" + e.toString() + ")");
 
                             }
-
                         }
-
                     }
-
                 });
-
     }
 
     private void startMainPage() {
@@ -422,11 +467,33 @@ public class LoginActivity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
 
-                            Log.i("Info", "signInWithCredential:success");
+                            Log.i("Info", "signInWithCredential Twitter:success");
 
                             twLogin = true;
+
+                            String username = session.getUserName();
+                            saveTwitterInfo(username);
+
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            user.setUserId(currentUser.getUid());
+
+                            if (user.getProfilePicSrc() != null) {
+
+                                try {
+                                    DownloadTask taskManager = new DownloadTask();
+                                    taskManager.execute(user.getProfilePicSrc()).get();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            //saveProfPicViaSocialApp();
+                            new FBCreateUserProfile(LoginActivity.this, user);
+
+                            startMainPage();
 
                         } else {
                             Log.i("Info", "  >>signInWithCredential:failure:" + task.getException());
@@ -438,6 +505,65 @@ public class LoginActivity extends AppCompatActivity
                 Log.i("Info", "  >>signInWithCredential:onFailure:" + e.toString());
             }
         });
+    }
+
+    public void saveTwitterInfo(String username) {
+
+        try {
+
+            Log.i("Info", "RetrieveFeedTask starts_xxxxx");
+
+            try {
+                Log.i("Info", "RetrieveFeedTask starts2");
+                ConfigurationBuilder cb = new ConfigurationBuilder();
+                cb.setOAuthConsumerKey(getResources().getString(R.string.twitter_consumer_key));
+                cb.setOAuthConsumerSecret(getResources().getString(R.string.twitter_consumer_secret));
+                cb.setOAuthAccessToken(getResources().getString(R.string.twitter_token));
+                cb.setOAuthAccessTokenSecret(getResources().getString(R.string.twitter_token_secret));
+                twitter4j.Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+                Log.i("Info", "RetrieveFeedTask starts3");
+
+                twitter4j.User twUser = null;
+
+                twUser = twitter.showUser(username);
+
+                String profImage = twUser.getBiggerProfileImageURL();
+                user.setProfilePicSrc(profImage);
+
+                String[] elements = twUser.getName().split(" ");
+                user.setName(elements[0]);
+
+                String[] lastname = Arrays.copyOfRange(elements, 1, elements.length);
+
+                StringBuilder builder = new StringBuilder();
+                for (String s : lastname) {
+                    builder.append(s);
+                    builder.append(" ");
+                }
+                String surname = builder.toString().trim();
+                user.setSurname(surname);
+
+                user.setUsername(twUser.getScreenName());
+
+
+                Log.i("Info", "  >>twitter profImage :" + profImage);
+                Log.i("Info", "  >>twitter name      :" + elements[0]);
+                Log.i("Info", "  >>twitter surname   :" + surname);
+                Log.i("Info", "  >>twitter username  :" + twUser.getScreenName());
+
+            } catch (twitter4j.TwitterException e) {
+                Log.i("Info", "  >>twitter try exception1:" + e.toString());
+            } catch (Exception e) {
+                Log.i("Info", "  >>twitter try exception2:" + e.toString());
+            }
+
+        } catch (Exception e) {
+            Log.i("Info", "  >>twitter try exception3:" + e.toString());
+
+        } finally {
+
+        }
+
     }
 
     public void getFacebookuserInfo(final LoginResult loginResult) {
@@ -461,10 +587,6 @@ public class LoginActivity extends AppCompatActivity
                             if(object.getString("id") != null)
                                 user.setProviderId(object.getString("id"));
                             else user.setProviderId(" ");
-
-                            user.setGender(" ");
-                            user.setUsername(" ");
-                            user.setPhoneNum(" ");
 
                             String[] elements = object.getString("name").split(" ");
                             user.setName(elements[0]);
@@ -506,14 +628,8 @@ public class LoginActivity extends AppCompatActivity
 
     public void setFacebookProfilePicture(String userID) {
 
-        try {
-            String url = "https://graph.facebook.com/" + userID + "/picture?type=large";
-            user.setProfilePicSrc(url);
-
-        } catch (Exception e) {
-
-            Log.i("Info", "  >>setFacebookProfilePicture error:" + e.toString());
-        }
+        String url = "https://graph.facebook.com/" + userID + "/picture?type=large";
+        user.setProfilePicSrc(url);
     }
 
     @Override
