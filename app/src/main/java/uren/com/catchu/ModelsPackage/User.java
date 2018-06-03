@@ -2,18 +2,33 @@ package uren.com.catchu.ModelsPackage;
 
 public class User {
 
-    String userId;
-    String email;
-    String username;
-    String name;
-    String surname;
-    String gender;
-    String profilePicSrc;
-    String miniProfPicUrl;
-    String birthdate;
-    String phoneNum;
-    String providerId;
-    String password;
+    private String userId;
+    private String email;
+    private String username;
+    private String name;
+    private String surname;
+    private String gender;
+    private String profilePicSrc;
+    private String miniProfPicUrl;
+    private String birthdate;
+    private String phoneNum;
+    private String providerId;
+    private String password ;
+
+    public User() {
+        this.userId = "";
+        this.email = "";
+        this.username = "";
+        this.name = "";
+        this.surname = "";
+        this.gender = "";
+        this.profilePicSrc = "";
+        this.miniProfPicUrl = "";
+        this.birthdate = "";
+        this.phoneNum = "";
+        this.providerId = "";
+        this.password = "";
+    }
 
     public String getPassword() {
         return password;
@@ -29,9 +44,6 @@ public class User {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
-    }
-
-    public User() {
     }
 
     public String getMiniProfPicUrl() {
