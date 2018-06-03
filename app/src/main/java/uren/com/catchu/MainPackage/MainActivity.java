@@ -86,6 +86,40 @@ public class MainActivity extends AppCompatActivity implements
 
         initValues();
 
+        fragmentHistory = new FragmentHistory();
+
+
+        mNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.content_frame)
+                .transactionListener(this)
+                .rootFragmentListener(this, TABS.length)
+                .build();
+
+
+        switchTab(0);
+
+        bottomTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                fragmentHistory.push(tab.getPosition());
+
+                switchTab(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+                mNavController.clearStack();
+
+                switchTab(tab.getPosition());
+            }
+        });
+
     }
 
     private void initValues() {
