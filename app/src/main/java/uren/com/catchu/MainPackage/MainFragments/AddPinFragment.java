@@ -1,7 +1,6 @@
 package uren.com.catchu.MainPackage.MainFragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,13 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arsy.maps_library.MapRipple;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -25,9 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import uren.com.catchu.MainPackage.LocationUtils.PermissionUtils;
+import uren.com.catchu.Constants.PermissionConstant;
 import uren.com.catchu.R;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -36,26 +33,23 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class AddPinFragment extends BaseFragment
         implements OnMapReadyCallback,
         View.OnClickListener,
-        LocationListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        LocationListener{
 
     private View mView;
     private GoogleMap mMap;
 
     //List of Permissions
     boolean isPermissionGranted;
-    ArrayList<String> permissions;
 
     //Location
+    Location location;
     private LocationManager locationManager;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean canGetLocation = false;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 20; // 20 meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 0; // 0 minute
-    float MapZoom = 8f;
-    private MapRipple mapRipple;
-    private LatLng latLng;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +62,8 @@ public class AddPinFragment extends BaseFragment
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_add_pin, container, false);
-            createMap();
+            MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.fragment_view_map);
+            mapFragment.getMapAsync(this);
         }
 
         return mView;
@@ -78,78 +73,69 @@ public class AddPinFragment extends BaseFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(mMap != null){
-            initPermissions();
-            if(isPermissionGranted){
-                centerMapToCurrentLocation();
-            }
+        if (mMap != null) {
+            checkLocationPermissions();
         }
 
-
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setTiltGesturesEnabled(true);
 
-        initPermissions();
-        if(isPermissionGranted){
-            centerMapToCurrentLocation();
-        }
-
+        checkLocationPermissions();
 
     }
 
-    private void createMap() {
-        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.fragment_view_map);
-        mapFragment.getMapAsync(this);
-    }
+    private void checkLocationPermissions() {
 
-    private void initPermissions() {
+        // ACCESS_FINE_LOCATION - (GPS)
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        permissions = new ArrayList<String>();
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        PermissionUtils.getInstance().checkPermissions(permissions, "Need GPS permission for getting your location", 1, getActivity());
-        isPermissionGranted = PermissionUtils.getInstance().isPermissionGranted;
-    }
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show an explanation to the user *asynchronously*
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        PermissionConstant.PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
 
-    private void centerMapToCurrentLocation() {
+            } else {
+                // No explanation needed, we can request the permission.
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        PermissionConstant.PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
 
-        Location loc = getLocation();
-        LatLng mFirstLocation;
-        if(loc == null){
-            LatLng sydney = new LatLng(-33.852, 151.211);
-            mFirstLocation = new LatLng(sydney.latitude,sydney.longitude);
-        }else{
-            mFirstLocation = new LatLng(loc.getLatitude(),loc.getLongitude());
-        }
-
-        CameraUpdate cameraPosition = CameraUpdateFactory.newLatLngZoom(mFirstLocation,16);
-        mMap.moveCamera(cameraPosition);
-        mMap.animateCamera(cameraPosition);
-
-        //Get Camera Zoom when Camera changes
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                MapZoom =  mMap.getCameraPosition().zoom;
             }
-        });
 
-        latLng = mFirstLocation ;
-        mapRipple = new MapRipple(mMap, latLng, getContext());
-
-
-
+        } else {
+            isPermissionGranted = true;
+            initMap();
+        }
     }
 
+    private void initMap() {
+
+        location = getLocation();
+
+        if (location != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new
+                    LatLng(location.getLatitude(),
+                    location.getLongitude()), 14));
+
+        } else {
+            LatLng sydney = new LatLng(-33.852, 151.211); //sydney
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
+        }
+
+        if (getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+
+    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -172,6 +158,38 @@ public class AddPinFragment extends BaseFragment
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionConstant.PERMISSION_REQUEST_ACCESS_FINE_LOCATION : {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Toast.makeText(getApplicationContext(), " ACCESS_FINE_LOCATION - Permission granted", Toast.LENGTH_SHORT).show();
+                    isPermissionGranted = true;
+                    initMap();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+
+        }
+
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -185,12 +203,11 @@ public class AddPinFragment extends BaseFragment
 
     private void dropMarkerClicked() {
         getLocation();
-
     }
 
     public Location getLocation() {
 
-        Location location = null;
+        Location loc = null;
 
         if (!isPermissionGranted) {
             return null;
@@ -218,7 +235,7 @@ public class AddPinFragment extends BaseFragment
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
                         if (locationManager != null) {
-                            location = locationManager
+                            loc = locationManager
                                     .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         }
 
@@ -228,7 +245,7 @@ public class AddPinFragment extends BaseFragment
 
                 //Eğer GPS etkin ise GPS Services kullanarak  latitude/longitude değerlerini alıyoruz
                 if (isGPSEnabled) {
-                    if (location == null) {
+                    if (loc == null) {
 
                         if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -237,7 +254,7 @@ public class AddPinFragment extends BaseFragment
                                     MIN_TIME_BW_UPDATES,
                                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                            location = locationManager
+                            loc = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
@@ -250,11 +267,9 @@ public class AddPinFragment extends BaseFragment
             e.printStackTrace();
         }
 
-        return location;
+        return loc;
 
     }
-
-
 
 
 }
