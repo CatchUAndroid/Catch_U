@@ -2,6 +2,7 @@ package uren.com.catchu.MainPackage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.location.LocationListener;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,9 @@ import com.twitter.sdk.android.core.TwitterCore;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uren.com.catchu.FirebaseAdapterPackage.FirebaseGetAccountHolder;
+import uren.com.catchu.FirebaseAdapterPackage.FirebaseGetFriends;
+import uren.com.catchu.FirebaseAdapterPackage.FirebaseGetGroups;
 import uren.com.catchu.FragmentControllers.FragNavController;
 import uren.com.catchu.FragmentControllers.FragmentHistory;
 import uren.com.catchu.General_Utils.CommonUtils;
@@ -38,11 +42,13 @@ import uren.com.catchu.MainPackage.MainFragments.NewsFragment;
 import uren.com.catchu.MainPackage.MainFragments.ProfileFragment;
 import uren.com.catchu.MainPackage.MainFragments.SearchFragment;
 import uren.com.catchu.R;
+import uren.com.catchu.SingletonClassPackages.ClearSingletonClasses;
 
 public class MainActivity extends AppCompatActivity implements
         BaseFragment.FragmentNavigation,
         FragNavController.TransactionListener,
-        FragNavController.RootFragmentListener{
+        FragNavController.RootFragmentListener,
+        LocationListener{
 
     private FirebaseAuth firebaseAuth;
     private String FBuserId;
@@ -126,6 +132,14 @@ public class MainActivity extends AppCompatActivity implements
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         FBuserId = currentUser.getUid();
+
+        FirebaseGetGroups.setInstance(null);
+        FirebaseGetFriends.setInstance(null);
+        //FirebaseGetAccountHolder.setInstance(null);
+
+        FirebaseGetFriends.getInstance(FBuserId);
+        FirebaseGetGroups.getInstance(FBuserId);
+        FirebaseGetAccountHolder.getInstance(FBuserId);
 
         onPausedInd = true;
         context = this;
@@ -296,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements
             LoginManager.getInstance().logOut();
 
             TwitterCore.getInstance().getSessionManager().clearActiveSession();
-            //ClearSingletonClasses.clearAllClasses();
+            ClearSingletonClasses.clearAllClasses();
 
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -321,4 +335,23 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(title);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

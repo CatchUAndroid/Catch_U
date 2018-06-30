@@ -3,6 +3,7 @@ package uren.com.catchu.MainPackage.MainFragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.arsy.maps_library.MapRipple;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,8 +30,10 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import uren.com.catchu.GetFriendOrGroupPackage.SelectedItemPackage.SelectedFriendList;
 import uren.com.catchu.MainPackage.LocationTrackerAdapter;
 import uren.com.catchu.MainPackage.MainActivity;
+import uren.com.catchu.MainPackage.UgurDenemePackage.UgurDenemeActivity;
 import uren.com.catchu.R;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -40,7 +44,8 @@ public class AddPinFragment extends BaseFragment implements
         OnMapReadyCallback ,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnCameraMoveListener{
+        GoogleMap.OnCameraMoveListener,
+        View.OnClickListener{
 
     private View mView;
     private MapView mapView;
@@ -50,6 +55,9 @@ public class AddPinFragment extends BaseFragment implements
     private LatLng latLng;
     private MapRipple mapRipple;
     LocationManager locationManager;
+
+    private Button selectFriendBtn;
+    private static SelectedFriendList selectedFriendListInstance;
 
 
     @Override
@@ -92,6 +100,14 @@ public class AddPinFragment extends BaseFragment implements
                 checkLocationPermission();
             }
         }
+
+        initViews();
+    }
+
+    private void initViews() {
+
+        selectFriendBtn = mView.findViewById(R.id.selectFriendBtn);
+        selectFriendBtn.setOnClickListener(this);
     }
 
     public boolean checkLocationPermission() {
@@ -286,6 +302,22 @@ public class AddPinFragment extends BaseFragment implements
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        int i = v.getId();
+
+        switch (i) {
+            case R.id.selectFriendBtn:
+                //startActivity(new Intent(getActivity(), SelectFriendOrGroupActivity.class));
+                startActivity(new Intent(getActivity(), UgurDenemeActivity.class));
+                break;
+
+            default:
+                break;
         }
     }
 }

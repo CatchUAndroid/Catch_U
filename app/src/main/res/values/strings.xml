@@ -14,6 +14,8 @@
     <string name="forgetPassText">We will send a link to your mail address. You can renew your password.</string>
     <string name="exitItem">Log Out</string>
     <string name="rememberMe">Remember Me</string>
+    <string name="addNewGroup">New Group</string>
+    <string name="search">Search</string>
 
     //Messages-Warnings
     <string name="UNKNOWN_ERROR">Operation failed!</string>
@@ -30,6 +32,42 @@
     <string name="PLEASE_WAIT">"Please wait.."</string>
     <string name="PASSWORD_LINK_SEND_SUCCESS">Renew password link has sent to your email address.</string>
     <string name="PASSWORD_LINK_SEND_FAIL">Fail to send link, please tyr again.</string>
+    <string name="noFriendFound">You have no friends yet</string>
+    <string name="noGroupFound">There are no groups yet to be included</string>
+    <string name="selectPersonOrGroup">Select Person or Groups</string>
+    <string name="groupNotSelected">Group is not selected!</string>
+    <string name="groupInformation">Group Information</string>
+    <string name="deleteGroup">Delete Group</string>
+    <string name="exitFromGroup">Exit From Group</string>
+    <string name="addFriendFirst">To create a group, you must first add a friend!</string>
+    <string name="selectLeastOneFriend">You must choose at least 1 person!</string>
+    <string name="selectLeastOneGroup">You must choose at least 1 group!</string>
+    <string name="errorOccured">Error occured:</string>
+    <string name="friends">Friends</string>
+    <string name="groups">Groups</string>
+    <string name="addFriendToGroup">Add Friend to Group</string>
+    <string name="areYouSureToDeleteGroup">Are you sure you want to delete the group?</string>
+    <string name="areYouSureExitFromGroup">Are you sure you want to leave the group?</string>
+    <string name="constantYes">Yes</string>
+    <string name="constantNo">No</string>
+    <string name="removeFromGroup">  Remove from the group</string>
+    <string name="viewTheProfile">  View the profile</string>
+    <string name="constantYou">You</string>
+    <string name="writeGroupName">Write group name...</string>
+    <string name="defineGroupNameAndIcon">Specify group name and icon</string>
+    <string name="participant">Participant:</string>
+    <string name="constantItem">item</string>
+    <string name="addGroupName">Add group name</string>
+    <string name="pleaseWriteGroupName">Please write group name!</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
+    <string name="openCamera">Open Camera</string>
+    <string name="openGallery">Open Gallery</string>
+    <string name="chooseProfilePhoto">Choose a profile photo</string>
+    <string name="deviceHasNoCamera">Device has no camera!</string>
+    <string name="selectPicture">Select Picture</string>
+    <string name="groupIsCreating">Group is composing...</string>
+    <string name="adminText">  Administrator  </string>
 
     <array name="tab_name">
         <item>Home</item>

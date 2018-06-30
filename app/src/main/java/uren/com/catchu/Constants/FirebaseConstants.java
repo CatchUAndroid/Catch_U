@@ -6,6 +6,12 @@ package uren.com.catchu.Constants;
 
 public class FirebaseConstants {
 
+    //Firebase
+    public static final String Profile = "Profile";
+    public static final String Friend = "Friend";
+    public static final String Groups = "Groups";
+    public static final String UserGroups = "UserGroups";
+
     //Firebase users childs
     public static final String userId = "userId";
     public static final String userName = "userName";
@@ -22,4 +28,16 @@ public class FirebaseConstants {
     public static final String provider = "provider";
     public static final String providerId = "providerId";
     public static final String profilePictureId = "profilePictureId";
+
+    //Firebase FacebookUSers childs
+    public static final String firebaseUserId = "firebaseUserId";
+
+
+    //Firebase Group constants
+    public static final String Admin = "Admin";
+    public static final String GroupName = "GroupName";
+    public static final String GroupPictureUrl = "GroupPictureUrl";
+    public static final String UserList = "UserList";
+    public static final String GroupImage = "GroupImage";
+    public static final String GroupID = "GroupID";
 }

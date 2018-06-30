@@ -59,6 +59,8 @@ public class FBCreateUserProfile {
                 @Override
                 public void onSuccess(HttpsCallableResult httpsCallableResult) {
                     Log.i("Info", "Function call is ok");
+
+                    FirebaseGetAccountHolder.getInstance(user.getUserId());
                 }
             });
 

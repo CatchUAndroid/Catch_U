@@ -13,5 +13,13 @@
     <color name="black_25_transparent">#40000000</color>
     <color name="transparent">#00000000</color>
     <color name="background">#33B5FF</color>
+    <color name="background_white">#FFFFFF</color>
+    <color name="oceanBlue">#2B65EC</color>
+    <color name="toastBackground">#E1E7EA</color>
+    <color name="red_logout">#E95354</color>
+    <color name="green">#70c050</color>
+    <color name="fullTransparentBlack">#00000000</color>
+    <color name="transparentBlack">#80000000</color>
+    <color name="egg_shell">#EFEEED</color>
 
 </resources>

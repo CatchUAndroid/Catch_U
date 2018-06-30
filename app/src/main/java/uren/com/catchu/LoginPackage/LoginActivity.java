@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
@@ -39,12 +40,16 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -63,6 +68,7 @@ import com.facebook.FacebookException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -74,6 +80,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import uren.com.catchu.FirebaseAdapterPackage.FBAddFacebookUserAdapter;
 import uren.com.catchu.FirebaseAdapterPackage.FBCreateUserProfile;
 import uren.com.catchu.General_Utils.BitmapConversion;
 import uren.com.catchu.LoginPackage.utils.ClickableImageView;
@@ -114,6 +121,7 @@ public class LoginActivity extends AppCompatActivity
 
     //Firebase
     private FirebaseAuth mAuth;
+    private String FBuserId;
 
 
     @Override
@@ -490,7 +498,7 @@ public class LoginActivity extends AppCompatActivity
                                 }
                             }
 
-                            //saveProfPicViaSocialApp();
+                            saveProfPicViaSocialApp();
                             new FBCreateUserProfile(LoginActivity.this, user);
 
                             startMainPage();
@@ -682,10 +690,10 @@ public class LoginActivity extends AppCompatActivity
                                     }
                                 }
 
-                                //saveProfPicViaSocialApp();
+                                saveProfPicViaSocialApp();
                                 new FBCreateUserProfile(LoginActivity.this, user);
 
-                               // FBAddFacebookUserAdapter.saveFacebookUser(user.getProviderId());
+                                FBAddFacebookUserAdapter.saveFacebookUser(user.getProviderId());
 
                                 startMainPage();
 
@@ -724,6 +732,49 @@ public class LoginActivity extends AppCompatActivity
                 Log.i("Info", "  >>DownloadTask error:" + e.toString());
                 return result;
             }
+        }
+    }
+
+    public void saveProfPicViaSocialApp() {
+
+        Log.i("Info", "saveProfPicViaSocialApp");
+
+        try {
+            //photoImageView.setDrawingCacheEnabled(true);
+            //photo = photoImageView.getDrawingCache();
+
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            FBuserId = currentUser.getUid();
+
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference riversRef = mStorageRef.child("Users/profilePics").child(FBuserId + ".jpg");
+
+            //photo = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = riversRef.putBytes(data);
+
+            uploadTask = riversRef.putStream(profileImageStream);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    Log.i("Info", "put file err:" + exception.toString());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    user.setProfilePicSrc(downloadUrl.toString());
+
+                    Log.i("Info", "downloadUrl:" + downloadUrl);
+                }
+            });
+        } catch (Exception e) {
+
+            Log.i("Info", "  >>saveProfPicViaSocialApp exception:" + e.toString());
         }
     }
 }

@@ -15,6 +15,8 @@
     <string name="forgetPassText">Mail adresinize göndereceğimiz link ile şifrenizi sıfırlayabilirsiniz.</string>
     <string name="exitItem">Çıkış</string>
     <string name="rememberMe">Beni Hatırla</string>
+    <string name="addNewGroup">Yeni Grup</string>
+    <string name="search">Arama</string>
 
     // Mesajlar-Uyarılar
     <string name="UNKNOWN_ERROR">İşlem tamamlanamadı!</string>
@@ -31,5 +33,41 @@
     <string name="PLEASE_WAIT">"Lütfen bekleyiniz.."</string>
     <string name="PASSWORD_LINK_SEND_SUCCESS">Şifre sıfırlama linki e-mail adresinize gönderildi.</string>
     <string name="PASSWORD_LINK_SEND_FAIL">Şifre gönderme başarısız, lütfen tekrar deneyiniz.</string>
+    <string name="noFriendFound">Henüz arkadasiniz bulunmamaktadir</string>
+    <string name="noGroupFound">Henüz olusturdugunuz yada dahil oldugunuz bir grup bulunmamaktadir</string>
+    <string name="selectPersonOrGroup">Kişi veya Grupları Seçiniz</string>
+    <string name="groupNotSelected">Grup Seçilemedi!</string>
+    <string name="groupInformation">Group Bilgileri</string>
+    <string name="deleteGroup">Grubu Sil</string>
+    <string name="exitFromGroup">Gruptan Çık</string>
+    <string name="addFriendFirst">Grup oluşturmak için önce arkadaş eklemelisiniz!</string>
+    <string name="selectLeastOneFriend">En az 1 kişi seçmelisiniz!</string>
+    <string name="selectLeastOneGroup">En az 1 grup seçmelisiniz!</string>
+    <string name="errorOccured">Hata oluştu:</string>
+    <string name="friends">Arkadaşlar</string>
+    <string name="groups">Gruplar</string>
+    <string name="addFriendToGroup">Katılımcı Ekle</string>
+    <string name="areYouSureToDeleteGroup">Grubu silmek istediğinize emin misiniz?</string>
+    <string name="areYouSureExitFromGroup">Gruptan çıkmak istediğinize emin misiniz?</string>
+    <string name="constantYes">Evet</string>
+    <string name="constantNo">Hayır</string>
+    <string name="removeFromGroup">  Gruptan Çikar</string>
+    <string name="viewTheProfile">  Profil Görüntüle</string>
+    <string name="constantYou">Siz</string>
+    <string name="writeGroupName">Grup adını yazın...</string>
+    <string name="defineGroupNameAndIcon">Grup adı ve simgesi belirleyin</string>
+    <string name="participant">Katılımcı:</string>
+    <string name="constantItem">adet</string>
+    <string name="addGroupName">Grup adı ekle</string>
+    <string name="pleaseWriteGroupName">Lütfen grup adını yazınız!</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
+    <string name="openCamera">Kamerayı Aç</string>
+    <string name="openGallery">Galeriden Seç</string>
+    <string name="chooseProfilePhoto">Profil fotoğrafı seçin</string>
+    <string name="deviceHasNoCamera">Cihazın kamerası yok!</string>
+    <string name="selectPicture">Resim Seçin</string>
+    <string name="groupIsCreating">Grup Oluşturuluyor...</string>
+    <string name="adminText">  Grup Yöneticisi  </string>
 
 </resources>
